@@ -94,6 +94,73 @@ describe('Arithmetic', function () {
     });
 
 // TODO: Challenge #1
+
+// add tests for log operation
+// log(x) where x is a positive number
+// log(x) where x is 1 (should return 0)
+// log(x) where x is between 0 and 1 (should return a negative number)
+// log(x) where x is a very large number
+// log(x) where x is 0 or negative (should handle error appropriately)
+    describe('Logarithm', function () {
+        it('computes the natural logarithm of a positive number', function (done) {
+            request.get('/arithmetic?operation=log&operand1=2.718281828459045&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 1 });
+                    done();
+                });
+        });
+        it('computes the natural logarithm of 1', function (done) {
+            request.get('/arithmetic?operation=log&operand1=1&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 0 });
+                    done();
+                });
+        });
+        it('computes the natural logarithm of a number between 0 and 1', function (done) {
+            request.get('/arithmetic?operation=log&operand1=0.5&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: -0.6931471805599453 });
+                    done();
+                }   );
+        });
+        it('computes the natural logarithm of a very large number', function (done) {
+            request.get('/arithmetic?operation=log&operand1=1e10&operand2=0')
+                .expect(200)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ result: 23.025850929940457 });
+                    done();
+                });
+        });
+        it('handles logarithm of zero', function (done) {
+            request.get('/arithmetic?operation=log&operand1=0&operand2=0')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ error: "Invalid operand1: 0" });
+                    done();
+                });
+        });
+        it('handles logarithm of a negative number', function (done) {
+            request.get('/arithmetic?operation=log&operand1=-1&operand2=0')
+                .expect(400)
+                .end(function (err, res) {
+                    expect(res.body).to.eql({ error: "Invalid operand1: -1" });
+                    done();
+                });
+        });
+    });
+
+// add tests for power operation
+// x^y where x is a positive number and y is a positive integer
+// x^y where x is a positive number and y is zero (should return 1)
+// x^y where x is zero and y is a positive integer (should return 0)
+// x^y where x is a negative number and y is an even integer (should return a positive number)
+// x^y where x is a negative number and y is an odd integer (should return a negative number)
+// x^y where x is a floating point number and y is an integer
+// x^y where y is a negative integer (should return a fraction)
+// x^y where x is zero and y is zero (should handle error appropriately)
 describe('Power', function () {
     it('raises a positive integer to a positive integer exponent', function (done) {
         request.get('/arithmetic?operation=power&operand1=2&operand2=3')
@@ -161,11 +228,7 @@ describe('Power', function () {
     });
 });
 
-// add tests for log operation
-describe('Logarithm', function () {
-    it('computes the natural logarithm of a positive integer', function (done) {
-        request.get('/arithmetic?operation=log&operand1=1&operand2=0')
-            .expect(200)
+
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
             request.get('/arithmetic?operation=multiply&operand1=21&operand2=2')
