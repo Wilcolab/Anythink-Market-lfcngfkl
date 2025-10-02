@@ -161,6 +161,11 @@ describe('Power', function () {
     });
 });
 
+// add tests for log operation
+describe('Logarithm', function () {
+    it('computes the natural logarithm of a positive integer', function (done) {
+        request.get('/arithmetic?operation=log&operand1=1&operand2=0')
+            .expect(200)
     describe('Multiplication', function () {
         it('multiplies two positive integers', function (done) {
             request.get('/arithmetic?operation=multiply&operand1=21&operand2=2')
